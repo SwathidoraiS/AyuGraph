@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------
+   Custom global styles for AyuGraph
+---------------------------------*/
+
+/* Base font and body setup */
+body {
+  @apply m-0 min-h-screen font-sans bg-gradient-to-br from-green-50 via-yellow-50 to-white;
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #213547; /* default text color */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  @apply m-0 font-semibold;
+}
+
+/* Links */
+a {
+  @apply font-medium text-green-700 hover:text-green-800;
+  text-decoration: none;
+}
+
+/* Buttons - let Tailwind handle button styles */
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+/* Inputs */
+input, textarea {
+  @apply border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300;
+}
+
+/* Optional: smaller text for forms */
+label, p, span {
+  @apply text-gray-700;
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 1024px) {
+  body {
+    @apply bg-gradient-to-b from-green-50 via-yellow-50 to-white;
+  }
+}
+
+/* Optional: smooth transitions for interactive elements */
+*:focus {
+  outline: none;
+}
+
