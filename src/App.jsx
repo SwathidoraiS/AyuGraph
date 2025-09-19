@@ -1,18 +1,67 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
+import { useState } from "react";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./pages/DoctorDashboard";
+import PatientDatabase from "./pages/PatientDatabase";
+import FoodDatabase from "./pages/FoodDatabase";
+import DoctorProfile from "./pages/DoctorProfile";
+import PatientSelection from "./components/PatientSelection";
+import DietGenerationForm from "./components/DietGenerationForm";
+import WeeklyDietPlan from "./components/WeeklyDietPlan";
+import DietActions from "./components/DietActions";
 
-export default function App() {
+function App() {
+  const [activePage, setActivePage] = useState("Dashboard");
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [dietPlan, setDietPlan] = useState(null);
+
+  const renderPage = () => {
+    switch (activePage) {
+      case "Dashboard":
+        return <Dashboard />;
+      case "Patients":
+        return <PatientDatabase />;
+      case "Food Database":
+        return <FoodDatabase />;
+      case "Diet Generator":
+        return (
+          <div className="p-6 space-y-6">
+            <h1 className="text-3xl font-bold text-green-900 mb-4">🌿 Diet Generator</h1>
+
+            {/* Step 1: Patient Selection */}
+            <PatientSelection setSelectedPatient={setSelectedPatient} />
+
+            {/* Step 2: Generate Diet */}
+            {selectedPatient && !dietPlan && (
+              <DietGenerationForm
+                patient={selectedPatient}
+                setDietPlan={setDietPlan}
+              />
+            )}
+
+            {/* Step 3: Show Weekly Diet Plan */}
+            {dietPlan && (
+              <>
+                <WeeklyDietPlan dietPlan={dietPlan} />
+                <DietActions dietPlan={dietPlan} patient={selectedPatient} />
+              </>
+            )}
+          </div>
+        );
+      case "Profile":
+        return <DoctorProfile />;
+      default:
+        return <div className="p-8 text-xl">Select a page</div>;
+    }
+  };
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="flex bg-[#FDFDF9] min-h-screen">
+      <Sidebar setActivePage={setActivePage} />
+      <main className="flex-1 bg-[#FFFFFF] shadow-inner overflow-y-auto">
+        {renderPage()}
+      </main>
+    </div>
   );
 }
+
+export default App;
