@@ -28,6 +28,23 @@ export default function Dashboard() {
     navigate("/Login"); // redirect to login page
   };
 
+  // New navigation handlers for the buttons
+  const handleNavigateToDietGenerator = () => {
+    navigate("/diet-generator");
+  };
+
+  const handleNavigateToPatientDetails = () => {
+    navigate("/patient-details");
+  };
+
+  const handleNavigateToDiscussionForum = () => {
+    navigate("/discussion-forum");
+  };
+
+  const handleNavigateToFoodDatabase = () => {
+    navigate("/food-database");
+  };
+
   return (
     <div className="p-6 space-y-6">
       {/* Top Section */}
@@ -58,6 +75,8 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <hr className="border-gray-300" />
+
       {/* Key Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="p-4 bg-green-50 rounded-xl shadow-md text-center">
@@ -82,21 +101,38 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <hr className="border-gray-300" />
+
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <button className="p-4 bg-white rounded-xl shadow hover:shadow-lg border text-green-700 font-medium">
+      <div className="grid grid-cols-2 gap-4">
+        {/* Updated buttons with new text and navigation */}
+        <button
+          onClick={handleNavigateToDietGenerator}
+          className="p-4 bg-white rounded-xl shadow hover:shadow-lg border text-green-700 font-medium w-full"
+        >
           ➕ Add New Diet Plan
         </button>
-        <button className="p-4 bg-white rounded-xl shadow hover:shadow-lg border text-green-700 font-medium">
+        <button
+          onClick={handleNavigateToPatientDetails}
+          className="p-4 bg-white rounded-xl shadow hover:shadow-lg border text-green-700 font-medium w-full"
+        >
           👥 View Patient List
         </button>
-        <button className="p-4 bg-white rounded-xl shadow hover:shadow-lg border text-green-700 font-medium">
-          📅 Schedule Consultation
+        <button
+          onClick={handleNavigateToDiscussionForum}
+          className="p-4 bg-white rounded-xl shadow hover:shadow-lg border text-green-700 font-medium w-full"
+        >
+          💬 Discussion Forum
         </button>
-        <button className="p-4 bg-white rounded-xl shadow hover:shadow-lg border text-green-700 font-medium">
-          💬 Check Messages
+        <button
+          onClick={handleNavigateToFoodDatabase}
+          className="p-4 bg-white rounded-xl shadow hover:shadow-lg border text-green-700 font-medium w-full"
+        >
+          📚 Food Database
         </button>
       </div>
+
+      <hr className="border-gray-300" />
 
       {/* Today’s Schedule */}
       <div className="bg-white p-6 rounded-xl shadow-md">
@@ -117,6 +153,8 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <hr className="border-gray-300" />
+
       {/* Recent Activity */}
       <div className="bg-white p-6 rounded-xl shadow-md">
         <h2 className="text-lg font-semibold text-green-700 mb-4">🔔 Recent Patient Activity</h2>
@@ -128,6 +166,8 @@ export default function Dashboard() {
           ))}
         </ul>
       </div>
+
+      <hr className="border-gray-300" />
 
       {/* AI Insights */}
       <div className="bg-green-50 p-6 rounded-xl shadow-inner">

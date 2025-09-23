@@ -1,43 +1,58 @@
 // backend/routes/Forum.js
-
 import express from 'express';
-import ForumPost from '../models/ForumPost.js'; // Corrected import name
+import ForumPost from '../models/ForumPost.js';
 
 const router = express.Router();
 
-// Route to get all forum posts
+// GET all forum posts
 router.get('/posts', async (req, res) => {
     try {
-        const posts = await ForumPost.find().sort({ date: -1 }); // Using ForumPost model
+        const posts = await ForumPost.find({}).sort({ createdAt: -1 });
         res.status(200).json(posts);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
 
-// Route to create a new forum post (The POST route)
+// POST a new forum post
 router.post('/posts', async (req, res) => {
-    // Now destructuring both 'title' and 'content'
-    const { title, content } = req.body;
-
-    // The author is still a hardcoded string in the frontend, so we don't need to destructure it
-    // The model defaults the author, so we can use that
-
-    // Basic validation
-    if (!title || !content) {
-        return res.status(400).json({ message: 'Title and content are required.' });
-    }
-
-    const newPost = new ForumPost({ // Using the correct ForumPost model
-        title,
-        content
-    });
-
+    const { title, content, author = "Dr. Anjali Sharma" } = req.body;
+    const newPost = new ForumPost({ title, content, author });
     try {
         const savedPost = await newPost.save();
         res.status(201).json(savedPost);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// PUT (update) a post by ID
+router.put('/posts/:id', async (req, res) => {
+    try {
+        const updatedPost = await ForumPost.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true } // Returns the updated document
+        );
+        if (!updatedPost) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.status(200).json(updatedPost);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// DELETE a post by ID
+router.delete('/posts/:id', async (req, res) => {
+    try {
+        const deletedPost = await ForumPost.findByIdAndDelete(req.params.id);
+        if (!deletedPost) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.status(200).json({ message: 'Post deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 

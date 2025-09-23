@@ -58,18 +58,27 @@ export default function PatientDetails() {
   };
 
   // Handle patient update
-  const handleUpdate = async (e) => {
+const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/patients/${patientToEdit._id}`, {
+      const url = `http://localhost:5000/api/patients/${patientToEdit._id}`;
+      console.log("Attempting to update patient with ID:", patientToEdit._id);
+      console.log("Data being sent:", editFormData);
+      
+      const response = await fetch(url, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(editFormData),
       });
+
+      console.log("Response status:", response.status);
+      console.log("Response status text:", response.statusText);
+
       if (!response.ok) {
-        throw new Error('Failed to update patient');
+        const errorText = await response.text();
+        throw new Error(`Failed to update patient. Server response: ${response.status} ${response.statusText}. Details: ${errorText}`);
       }
       const updatedPatient = await response.json();
       // Update the patient in the state
@@ -78,8 +87,8 @@ export default function PatientDetails() {
       setShowEditModal(false);
       setPatientToEdit(null);
     } catch (err) {
-      console.error("Error updating patient:", err);
-      setMessage("Error updating patient.");
+      console.error("Error updating patient:", err.message);
+      setMessage(`Error updating patient: ${err.message}`);
     }
   };
 

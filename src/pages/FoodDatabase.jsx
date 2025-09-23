@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 
 const FoodCard = ({ food, onEdit, onDelete }) => (
+
+  
   <div className="bg-white rounded-xl shadow-md hover:shadow-lg p-4 transition-shadow duration-300">
     <div className="flex items-center mb-2">
+      
       <div className="text-xl font-semibold text-green-800">{food.name}</div>
       <div className="ml-auto flex items-center text-sm text-gray-600">
         {/* Category Icon Placeholder */}
@@ -63,9 +66,7 @@ const FoodCard = ({ food, onEdit, onDelete }) => (
 
     {/* Buttons: View Details, Edit, Delete */}
     <div className="flex justify-center gap-3">
-      <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-300">
-        View Details
-      </button>
+      
       <button
         onClick={onEdit}
         className="bg-blue-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-300"

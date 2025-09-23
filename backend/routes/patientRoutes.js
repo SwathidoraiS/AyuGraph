@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
         const patientData = req.body;
         // Optional: Calculate dosha scores before saving
         const doshaScores = calculateDoshaScores(patientData);
-        const newPatient = new Patient({ ...patientData, doshaScores });
+        const newPatient = new Patient({ ...patientData, ...doshaScores });
         await newPatient.save();
         res.status(201).json({ message: "Patient profile saved successfully!" });
     } catch (err) {
@@ -42,14 +42,18 @@ router.post('/', async (req, res) => {
 });
 
 // PUT (update) a patient by ID
+// PUT (update) a patient by ID
 router.put('/:id', async (req, res) => {
+    console.log(`PUT request received for patient ID: ${req.params.id}`);
+    console.log('Received data:', req.body);
     try {
         const patientData = req.body;
-        const doshaScores = calculateDoshaScores(patientData); // Recalculate scores on update
+        // Recalculate scores on update
+        const doshaScores = calculateDoshaScores(patientData); 
         const updatedPatient = await Patient.findByIdAndUpdate(
             req.params.id,
-            { ...patientData, doshaScores },
-            { new: true } // Returns the updated document
+            { ...patientData, ...doshaScores },
+            { new: true, runValidators: true } // Returns the updated document and runs schema validators
         );
 
         if (!updatedPatient) {
@@ -57,6 +61,7 @@ router.put('/:id', async (req, res) => {
         }
         res.status(200).json(updatedPatient);
     } catch (err) {
+        console.error("Error updating patient:", err);
         res.status(500).json({ message: err.message });
     }
 });
